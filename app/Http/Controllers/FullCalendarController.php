@@ -23,7 +23,6 @@ class FullCalendarController extends Controller
 
     public function action(Request $request)
     {
-
         if($request->ajax())
         {
             if($request->type == 'add')
