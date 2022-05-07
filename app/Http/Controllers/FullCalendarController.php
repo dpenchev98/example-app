@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 
 use App\Models\Event;
@@ -21,8 +22,18 @@ class FullCalendarController extends Controller
         return view('calender.index');
     }
 
+    public function clients(Request $request)
+    {
+        if($request->ajax())
+        {
+            $data = Client::get(['id', 'name']);
+            return response()->json($data);
+        }
+    }
+
     public function action(Request $request)
     {
+
         if($request->ajax())
         {
             if($request->type == 'add')

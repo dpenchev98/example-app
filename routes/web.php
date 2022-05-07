@@ -42,6 +42,7 @@ Route::get('/pages', function () {
 
 Route::get('calender',[FullCalendarController::class,'index'])->name('calender.index');
 Route::get('calender/full-calender', [FullCalendarController::class, 'index']);
+Route::get('calender/clients', [FullCalendarController::class, 'clients']);
 Route::post('full-calender/action', [FullCalendarController::class, 'action']);
 
 
