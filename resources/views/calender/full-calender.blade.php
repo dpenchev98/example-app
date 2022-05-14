@@ -17,6 +17,51 @@
 
 
 <!-- Modal -->
+<div class="modal fade" id="bookingEditModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Добави събитие</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <form action="">
+                @csrf
+                <div class="modal-body">
+                    <label class="form-label">Начален час:</label>
+                    <input type = "text"  class="form-control" id="start" readonly="readonly">
+                </div>
+                <div class="modal-body">
+                    <label class="form-label">Краен час:</label>
+                    <input type = "text" class="form-control" id="end" readonly="readonly">
+                </div>
+                <div class="modal-body">
+                    <label class="form-label">Дейност:</label>
+                    <input type = "text" class="form-control" id="title" />
+                </div>
+                <div class="modal-body">
+                    <label class="form-label">Клиент:</label>
+                    <select name="client_id" id="client_id" class="form-control">
+                        <option value="">Зареждане...</option>
+                    </select>
+                </div>
+                <div class="modal-body">
+                    <label class="form-label">Специалист:</label>
+                    <select name="user_id" id="user_id" class="form-control">
+                        <option value="">Зареждане...</option>
+                    </select>
+                </div>
+                <div class="modal-footer">
+                    <input onClick="edit" type="button" class="btn btn-primary" value="Редактирай">
+                    <input onClick="delete" type="button" class="btn btn-danger" value="Изтрий">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Изход</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+
 <div class="modal fade" id="bookingModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -24,22 +69,39 @@
                 <h5 class="modal-title" id="exampleModalLabel">Добави събитие</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
+
+            <form action="" onsubmit="return modalsubmit()">
+                @csrf
+            <div class="modal-body">
+                <label class="form-label">Начален час:</label>
+                <input type = "text"  class="form-control" id="start" readonly="readonly">
+            </div>
+            <div class="modal-body">
+                <label class="form-label">Краен час:</label>
+                <input type = "text" class="form-control" id="end" readonly="readonly">
+            </div>
             <div class="modal-body">
                 <label class="form-label">Дейност:</label>
-                <input type = "text" class="form-control" id="title">
+                <input type = "text" class="form-control" id="title" />
             </div>
             <div class="modal-body">
                 <label class="form-label">Клиент:</label>
-                <input type = "id" class="form-control" id="client_id">
+                <select name="client_id" id="client_id" class="form-control">
+                   <option value="">Зареждане...</option>
+                </select>
             </div>
             <div class="modal-body">
                 <label class="form-label">Специалист:</label>
-                <input type = "id" class="form-control" id="user_id">
+                <select name="user_id" id="user_id" class="form-control">
+                    <option value="">Зареждане...</option>
+                </select>
             </div>
             <div class="modal-footer">
-                <button type="submit" class="btn btn-primary">Добави</button>
+                <input type="submit" class="btn btn-primary" value="Добави">
                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Изход</button>
             </div>
+            </form>
+
         </div>
     </div>
 </div>
@@ -78,45 +140,38 @@
             selectHelper: true,
             select:function(start, end, allDay)
             {
-                $('#bookingModal').modal('toggle');
-                //var title = prompt('Описание на дейността:');
-
-                //var client_id = prompt ('Клиент:');
-
-                //var user_id = prompt ('Специалист:');
-
-
-
-
-                /*if(title == '' || client_id == '' || user_id == '')
-                {
-                    alert("Моля попълнете празните полета!");
-                    return;
-                }*/
+                $('#bookingModal').modal('show');
 
                 var start = $.fullCalendar.formatDate(start, 'Y-MM-DD HH:mm:ss');
-
                 var end = $.fullCalendar.formatDate(end, 'Y-MM-DD HH:mm:ss');
-
-                $.ajax({
-                    url:"/full-calender/action",
-                    type:"POST",
-                    data:{
-                        title: title,
-                        client_id: client_id,
-                        user_id: user_id,
-                        start: start,
-                        end: end,
-                        type: 'add'
-                    },
-                    success:function(data)
-                    {
-                        calendar.fullCalendar('refetchEvents');
-                        alert("Успешно създадено събитие");
-                    }
-                })
+                $('#start').val(start);
+                $('#end').val(end);
 
             },
+
+
+
+            /*
+                            $.ajax({
+                                url:"/full-calender/action",
+                                type:"POST",
+                                data:{
+                                    title: title,
+                                    client_id: client_id,
+                                    user_id: user_id,
+                                    start: start,
+                                    end: end,
+                                    type: 'add'
+                                },
+                                success:function(data)
+                                {
+                                    calendar.fullCalendar('refetchEvents');
+                                    alert("Успешно създадено събитие");
+                                }
+                            })
+               */
+
+
             editable:true,
             eventResize: function(event, delta)
             {
@@ -167,28 +222,121 @@
 
             eventClick:function(event)
             {
-                if(confirm("Желаете ли да бъде изтрито?"))
-                {
-                    var id = event.id;
-                    $.ajax({
-                        url:"/full-calender/action",
-                        type:"POST",
-                        data:{
-                            id:id,
-                            type:"delete"
-                        },
-                        success:function(response)
-                        {
-                            calendar.fullCalendar('refetchEvents');
-                            alert("Успешно изтрито събитие");
-                        }
-                    })
-                }
+                var id = event.id;
+
+                console.log(event);
+
+                $('#bookingEditModal').modal('show');
+
+                setTimeout(() => {
+                    $('#bookingEditModal #start').val(event.start._i);
+                    $('#bookingEditModal #end').val(event.end._i);
+                    $('#bookingEditModal #title').val(event.title);
+                    $('#bookingEditModal #client_id').val(event['client_id']);
+                    $('#bookingEditModal #user_id').val(event['user_id']);
+                }, 1000);
+
+
+
+
+                // if(confirm("Желаете ли да бъде изтрито?"))
+                // {
+                //     $.ajax({
+                //         url:"/full-calender/action",
+                //         type:"POST",
+                //         data:{
+                //             id:id,
+                //             type:"delete"
+                //         },
+                //         success:function(response)
+                //         {
+                //             calendar.fullCalendar('refetchEvents');
+                //             alert("Успешно изтрито събитие");
+                //         }
+                //     })
+                // }
+            }
+
+
+        });
+
+        $.ajax({
+            url:"/calender/clients",
+            type:"GET",
+            data:{
+
+            },
+            success:function(data)
+            {
+                $('#bookingModal #client_id').html('<option value="">Изберете</option>');
+                $('#bookingEditModal #client_id').html('<option value="">Изберете</option>');
+
+                data.forEach(function(element){
+                    $('#bookingModal #client_id').append('<option value="'+element.id+'">'+element.name+'</option>');
+                    $('#bookingEditModal #client_id').append('<option value="'+element.id+'">'+element.name+'</option>');
+                });
             }
         });
+
+        $.ajax({
+            url:"/calender/specialists",
+            type:"GET",
+            data:{
+
+            },
+            success:function(data)
+            {
+                $('#bookingModal #user_id').html('<option value="">Изберете</option>');
+                $('#bookingEditModal #user_id').html('<option value="">Изберете</option>');
+
+                data.forEach(function(element){
+                    $('#bookingModal #user_id').append('<option value="'+element.id+'">'+element.name+'</option>');
+                    $('#bookingEditModal #user_id').append('<option value="'+element.id+'">'+element.name+'</option>');
+                });
+            }
+        });
+
+        $('#bookingModal').on('shown.bs.modal',function(){
+
+            $('#bookingModal #client_id').val("");
+            $('#bookingModal #user_id').val("");
+            $('#bookingModal #title').val('');
+
+        });
+
+
     });
 
+    function edit(e) {
 
+    }
+
+    /*function delete (e) {
+
+    }*/
+
+        function modalsubmit(){
+                 $.ajax({
+                    url:"/full-calender/action",
+                    type:"POST",
+                    data:{
+                        title: $('#title').val(),
+                        client_id: $('#client_id').val(),
+                        user_id: $('#user_id').val(),
+                        start: $('#start').val(),
+                        end: $('#end').val(),
+                        type: 'add'
+                    },
+
+           success:function(data)
+            {
+                $('#calendar').fullCalendar('refetchEvents');
+                alert("Успешно създадено събитие");
+                $('#bookingModal').modal('hide');
+            }
+        })
+        return false;
+    }
 
 </script>
 

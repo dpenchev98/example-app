@@ -16,4 +16,10 @@ class Clients extends Model
 
 
     public $timestamps = true;
+
+    public function events (){
+        return $this->hasMany(
+            Event::class,'client_id','id'
+        );
+    }
 }

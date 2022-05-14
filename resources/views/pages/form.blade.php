@@ -17,7 +17,7 @@
                     @endif
 
 
-                    <form method="POST" action="{{ route('pages.add') }}">
+                    <form method="POST" action="{{ route('calender.action') }}">
                         @csrf
                         <div>
                             <x-label for="title" :value="__('Заглавие')" />
