@@ -66,9 +66,9 @@ class FullCalendarController extends Controller
             if($request->type == 'update')
             {
                 $event = Event::find($request->id)->update([
-                    'title'		=>	$request->title,
                     'start'		=>	$request->start,
-                    'end'		=>	$request->end
+                    'end'		=>	$request->end,
+                    'title'		=>	$request->title
                 ]);
 
                 return response()->json($event);

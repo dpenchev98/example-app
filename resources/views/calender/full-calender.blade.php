@@ -21,11 +21,12 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Добави събитие</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Редактиране на събитие</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
 
-            <form action="">
+            <form>
+                <input type = "hidden" id="id" readonly="readonly">
                 @csrf
                 <div class="modal-body">
                     <label class="form-label">Начален час:</label>
@@ -52,12 +53,11 @@
                     </select>
                 </div>
                 <div class="modal-footer">
-                    <input onClick="edit" type="button" class="btn btn-primary" value="Редактирай">
-                    <input onClick="delete" type="button" class="btn btn-danger" value="Изтрий">
+                    <input onclick="edit()" type="button" class="btn btn-primary" value="Редактирай">
+                    <input onclick="remove()" type="button" class="btn btn-danger" value="Изтрий">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Изход</button>
                 </div>
             </form>
-
         </div>
     </div>
 </div>
@@ -234,6 +234,7 @@
                     $('#bookingEditModal #title').val(event.title);
                     $('#bookingEditModal #client_id').val(event['client_id']);
                     $('#bookingEditModal #user_id').val(event['user_id']);
+                    $('#bookingEditModal #id').val(event.id);
                 }, 1000);
 
 
@@ -307,13 +308,44 @@
 
     });
 
-    function edit(e) {
+        function edit() {
+            $.ajax({
+                url: "/full-calender/action",
+                type: "POST",
+                data: {
+                    title: $('#title').val(),
+                    client_id: $('#client_id').val(),
+                    user_id: $('#user_id').val(),
+                    start: $('#start').val(),
+                    end: $('#end').val(),
+                    id: $('#id').val(),
+                    type: 'update'
+                },
 
-    }
+                success: function (data) {
+                    $('#calendar').fullCalendar('refetchEvents');
+                    alert("Успешно редактирано събитие");
+                    $('#bookingModal').modal('hide');
+                }
+            })
+        }
 
-    /*function delete (e) {
+        function remove () {
+            $.ajax({
+                url: "/full-calender/action",
+                type: "POST",
+                data: {
+                    id: $('#id').val(),
+                    type:'delete'
+                },
 
-    }*/
+                success: function (data) {
+                    $('#calendar').fullCalendar('refetchEvents');
+                    alert("Успешно изтрито събитие");
+                    $('#bookingModal').modal('hide');
+                }
+            })
+        }
 
         function modalsubmit(){
                  $.ajax({
