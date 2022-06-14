@@ -49,6 +49,9 @@
                      <x-nav-link :href="route('calender.index')" :active="request()->routeIs('calender.index')">
                          {{ __('График') }}
                      </x-nav-link>
+                     <x-nav-link :href="route('reports.index')" :active="request()->routeIs('reports.index')">
+                         {{ __('Отчети') }}
+                      </x-nav-link>
                     @endcan
                 </div>
             </div>

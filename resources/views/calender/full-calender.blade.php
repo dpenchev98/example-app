@@ -123,10 +123,6 @@
             },
         });
 
-        /*var clients = $.get('calender/full-calender', (data,status) => {
-            console.log(data);
-        })*/
-
         var calendar = $('#calendar').fullCalendar({
             editable:true,
             header:{
@@ -148,28 +144,6 @@
                 $('#end').val(end);
 
             },
-
-
-
-            /*
-                            $.ajax({
-                                url:"/full-calender/action",
-                                type:"POST",
-                                data:{
-                                    title: title,
-                                    client_id: client_id,
-                                    user_id: user_id,
-                                    start: start,
-                                    end: end,
-                                    type: 'add'
-                                },
-                                success:function(data)
-                                {
-                                    calendar.fullCalendar('refetchEvents');
-                                    alert("Успешно създадено събитие");
-                                }
-                            })
-               */
 
 
             editable:true,
@@ -198,6 +172,7 @@
             },
             eventDrop: function(event, delta)
             {
+                debugger;
                 var start = $.fullCalendar.formatDate(event.start, 'Y-MM-DD HH:mm:ss');
                 var end = $.fullCalendar.formatDate(event.end, 'Y-MM-DD HH:mm:ss');
                 var title = event.title;
@@ -236,26 +211,6 @@
                     $('#bookingEditModal #user_id').val(event['user_id']);
                     $('#bookingEditModal #id').val(event.id);
                 }, 1000);
-
-
-
-
-                // if(confirm("Желаете ли да бъде изтрито?"))
-                // {
-                //     $.ajax({
-                //         url:"/full-calender/action",
-                //         type:"POST",
-                //         data:{
-                //             id:id,
-                //             type:"delete"
-                //         },
-                //         success:function(response)
-                //         {
-                //             calendar.fullCalendar('refetchEvents');
-                //             alert("Успешно изтрито събитие");
-                //         }
-                //     })
-                // }
             }
 
 
@@ -313,12 +268,12 @@
                 url: "/full-calender/action",
                 type: "POST",
                 data: {
-                    title: $('#title').val(),
-                    client_id: $('#client_id').val(),
-                    user_id: $('#user_id').val(),
+                    title: $('#bookingEditModal #title').val(),
+                    client_id: $('#bookingEditModal #client_id').val(),
+                    user_id: $('#bookingEditModal #user_id').val(),
                     start: $('#start').val(),
                     end: $('#end').val(),
-                    id: $('#id').val(),
+                    id: $('#bookingEditModal #id').val(),
                     type: 'update'
                 },
 
@@ -348,13 +303,14 @@
         }
 
         function modalsubmit(){
+
                  $.ajax({
                     url:"/full-calender/action",
                     type:"POST",
                     data:{
-                        title: $('#title').val(),
-                        client_id: $('#client_id').val(),
-                        user_id: $('#user_id').val(),
+                        title: $('#bookingModal #title').val(),
+                        client_id: $('#bookingModal #client_id').val(),
+                        user_id: $('#bookingModal #user_id').val(),
                         start: $('#start').val(),
                         end: $('#end').val(),
                         type: 'add'

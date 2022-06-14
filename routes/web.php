@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ReportsController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FullCalendarController;
 
@@ -38,6 +39,10 @@ Route::get('/clients', function () {
 Route::get('/pages', function () {
     return view('dashboard');
 })->name('pages');
+
+
+Route::get('reports',[ReportsController::class, 'index'] )->name('reports.index');
+Route::get('search', [ReportsController::class, 'search'])->name('reports.search');
 
 
 Route::get('calender',[FullCalendarController::class,'index'])->name('calender.index');

@@ -55,12 +55,12 @@
                                         <div class="text-sm text-gray-500">
                                             <td>
                                                 <div class="text-sm font-medium text-gray-900">
-                                                    {{$event->start}}
+                                                    {{\Carbon\Carbon::parse($event->start)->format('d-m-y h:m')}}
                                                 </div>
                                             </td>
                                             <td>
                                                 <div class="text-sm font-medium text-gray-900">
-                                                    {{$event->end}}
+                                                    {{\Carbon\Carbon::parse($event->end)->format('d-m-y h:m')}}
                                                 </div>
                                             </td>
                                             <td>

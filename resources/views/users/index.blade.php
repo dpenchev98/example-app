@@ -54,7 +54,7 @@
 
                     <tbody class="bg-white divide-y divide-gray-200">
 
-                    @foreach($users as $user )
+                    @foreach($users as $user)
                         <tr class="text-center">
                             <div class="flex items-center">
                                 <div class="text-sm text-gray-500">

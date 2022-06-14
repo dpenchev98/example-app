@@ -47,7 +47,6 @@ class FullCalendarController extends Controller
 
     public function action(Request $request)
     {
-
         if($request->ajax())
         {
             if($request->type == 'add')
@@ -65,10 +64,11 @@ class FullCalendarController extends Controller
 
             if($request->type == 'update')
             {
+
                 $event = Event::find($request->id)->update([
                     'start'		=>	$request->start,
                     'end'		=>	$request->end,
-                    'title'		=>	$request->title
+
                 ]);
 
                 return response()->json($event);
