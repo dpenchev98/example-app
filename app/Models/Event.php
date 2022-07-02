@@ -14,6 +14,10 @@ class Event extends Model
         'title','client_id','user_id', 'start', 'end'
     ];
 
+    protected $dates = [
+      'start', 'end'
+    ];
+
     public function client (){
         return $this->belongsTo(
             Clients::class,'client_id','id'

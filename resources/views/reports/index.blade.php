@@ -15,18 +15,18 @@
                         </div>
 
                         <form class = "form-inline my-2 my-lg-0" type="get" action="{{url ('/search')}}">
-                            <input data-toggle="datepicker"  class = "mr-sm-2 appearance-none border-2 border-black-200 rounded py-1 px-1" >
-                            <input data-toggle="datepicker" class = "mr-sm-2 appearance-none border-2 border-black-200 rounded py-1 px-1">
+                            <input data-toggle="datepicker" name="from" value="{{(request()->input('from') ?? old('from'))}}" class = "mr-sm-2 appearance-none border-2 border-black-200 rounded py-1 px-1" >
+                            <input data-toggle="datepicker" name="to" value="{{(request()->input('to') ?? old('to'))}}" class = "mr-sm-2 appearance-none border-2 border-black-200 rounded py-1 px-1">
                             <select name="user" class = "mr-sm-2">
                                 <option value="">Специалист</option>
                                 @foreach($users as $user)
-                                <option value="{{ $user->id }}">{{ $user->name }}</option>
+                                <option value="{{ $user->id }}" {{$user->id == (request()->input('user') ?? old('user')) ?'selected':' '}}>{{ $user->name }}</option>
                                 @endforeach
                             </select>
                             <select name="client" class = "mr-sm-2">
                                 <option value="">Клиент</option>
                                 @foreach($clients as $client)
-                                <option value="{{ $client->id }}">{{ $client->name }}</option>
+                                <option value="{{ $client->id }}" {{$client->id == (request()->input('client') ?? old('client')) ?'selected':' '}}>{{ $client->name }}</option>
                                 @endforeach
                             </select>
                             <button class="btn btn-primary mr-2" type="submit">Търсене</button>
@@ -57,6 +57,12 @@
                             <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 Дейност
                             </th>
+                            <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Начало
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Край
+                            </th>
                         </tr>
                       </thead>
 
@@ -79,6 +85,16 @@
                                         <td>
                                             <div class="text-sm font-medium text-gray-900">
                                                 {{$report->title}}
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="text-sm font-medium text-gray-900">
+                                                {{$report->start}}
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="text-sm font-medium text-gray-900">
+                                                {{$report->end}}
                                             </div>
                                         </td>
                                     </div>
